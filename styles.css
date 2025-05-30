@@ -10970,3 +10970,22 @@ section.resume-section .resume-section-content {
     padding-bottom: 5rem;
   }
 }
+
+/* Reduce vertical space between sections */
+.resume-section {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* Tighter spacing for headers and section blocks */
+.resume-section h2 {
+    margin-bottom: 1.5rem;
+}
+
+.resume-section .mb-5 {
+    margin-bottom: 1.5rem !important;
+}
+
+.resume-section .mb-4 {
+    margin-bottom: 1rem !important;
+}
