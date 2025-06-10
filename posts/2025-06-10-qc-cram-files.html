@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QC CRAM/BAM Files with Samtools</title>
+    <link href="../styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container p-4">
+        <h1>🔬 How to Quality Check CRAM/BAM Files Using Samtools</h1>
+        <p><em>Posted on June 10, 2025</em></p>
+
+        <p>Before using BAM or CRAM files for downstream analysis like variant calling, it's critical to ensure they are complete and properly indexed. Here's a quick checklist and commands you can use to verify the integrity of your alignment files using <code>samtools</code>.</p>
+
+        <h3>🧪 1. Check File Integrity</h3>
+        <pre><code>samtools quickcheck -v sample.bam</code></pre>
+        <p>If the BAM or CRAM file is incomplete or corrupted, this will print a warning.</p>
+
+        <h3>🗂 2. Check Index File</h3>
+        <p>Ensure your index file exists (e.g., <code>sample.bam.bai</code> or <code>sample.cram.crai</code>) and matches the content.</p>
+
+        <h3>🧬 3. Print Header</h3>
+        <pre><code>samtools view -H sample.bam</code></pre>
+        <p>This verifies the file is readable and shows reference info, read groups, etc.</p>
+
+        <h3>📊 4. Check Read Distribution</h3>
+        <pre><code>samtools idxstats sample.bam</code></pre>
+        <p>This prints chromosome-level summary (mapped/unmapped reads per contig). If the index is broken or missing contigs, this will highlight the issue. Variant callers rely on this data, so it's essential!</p>
+
+        <h3>💡 Quick Tip</h3>
+        <p>If <code>samtools idxstats</code> returns no entries for some chromosomes, your index file might be outdated or incorrectly built. Reindex with:</p>
+        <pre><code>samtools index sample.bam</code></pre>
+
+        <p><a href="../blog.html">← Back to Blog</a></p>
+    </div>
+</body>
+</html>
