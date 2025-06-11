@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parsing VEP-Annotated VCFs with R</title>
+    <link href="../styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container p-4">
+        <h3><a href="../index.html">Zeeshan Fazal's Bioinformatics Blog</a></h3>
+        <div class="blog-post">
+            <h4>Parsing VEP-Annotated VCF Files into Tabular Format with R</h4>
+            <p><em>June 10, 2025</em></p>
+
+            <p><strong>Why Parse VEP-Annotated VCFs?</strong></p>
+            <p>Variant Effect Predictor (VEP) is a powerful tool by Ensembl that annotates VCF files with rich biological insights — such as predicted consequences, gene names, protein changes, and population allele frequencies. However, this annotation is stored in a condensed format under the <code>CSQ</code> tag in the INFO field, making it difficult to filter, group, or visualize.</p>
+            <p>To get the most out of VEP annotations, it’s essential to parse these fields into a clean, tabular structure.</p>
+
+            <p><strong>R Script Overview</strong></p>
+            <p>Here’s an example script I use to:</p>
+            <ul>
+                <li>Load a VEP-annotated VCF file</li>
+                <li>Extract and parse the CSQ field</li>
+                <li>Combine variant info, CSQ annotations, VAF, and genotype data</li>
+                <li>Output a final tidy table for downstream analysis</li>
+            </ul>
+
+<pre><code>options(stringsAsFactors = FALSE)
+library(vcfR)
+library(ensemblVEP)
+library(dplyr)
+library(tidyr)
+
+
+files <- list.files(pattern = "*.vcf.gz")
+vcf_wes <- read.vcfR(files[1], verbose = FALSE)
+
+vep_header <- data.frame(vcf_wes@meta)
+vep_variants <- data.frame(vcf_wes@fix)
+vep_gt <- data.frame(vcf_wes@gt)
+VAF <- data.frame(extract.gt(vcf_wes, element = "AF", as.numeric = TRUE))
+colnames(VAF) <- "VAF"
+
+vcf_ens <- readVcf(files[1], "hg38")
+csq_vep <- parseCSQToGRanges(vcf_ens)
+csq_vep <- data.frame(csq_vep)[ , -c(1:5, 8, 9)]
+
+info <- strsplit(vep_variants$INFO, ";CSQ")
+info_df <- as.data.frame(matrix(unlist(info), ncol=2, byrow=TRUE))
+INFO <- info_df[1]
+colnames(INFO) <- "INFO"
+
+vep_variants_filt <- vep_variants[ , c(1:2,4:7) ]
+VEP <- cbind.data.frame(vep_variants_filt, INFO, csq_vep, VAF, vep_gt)
+write.table(VEP, "VEP_annotated_table.tsv", sep = "", row.names = FALSE, quote = FALSE)
+</code></pre>
+
+            <p><strong>Output Columns</strong></p>
+            <ul>
+                <li>CHROM, POS, REF, ALT, QUAL, FILTER</li>
+                <li>INFO field (excluding CSQ)</li>
+                <li>VEP annotations (e.g., Consequence, Gene, Feature_type)</li>
+                <li>VAF (Variant Allele Fraction)</li>
+                <li>Genotype-level fields</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
