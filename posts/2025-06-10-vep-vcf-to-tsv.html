@@ -33,12 +33,12 @@ library(tidyr)
 
 
 files <- list.files(pattern = "*.vcf.gz")
-vcf_wes <- read.vcfR(files[1], verbose = FALSE)
+vcf_db <- read.vcfR(files[1], verbose = FALSE)
 
-vep_header <- data.frame(vcf_wes@meta)
-vep_variants <- data.frame(vcf_wes@fix)
-vep_gt <- data.frame(vcf_wes@gt)
-VAF <- data.frame(extract.gt(vcf_wes, element = "AF", as.numeric = TRUE))
+vep_header <- data.frame(vcf_db@meta)
+vep_variants <- data.frame(vcf_db@fix)
+vep_gt <- data.frame(vcf_db@gt)
+VAF <- data.frame(extract.gt(vcf_db, element = "AF", as.numeric = TRUE))
 colnames(VAF) <- "VAF"
 
 vcf_ens <- readVcf(files[1], "hg38")
