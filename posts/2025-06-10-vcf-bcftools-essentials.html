@@ -1,93 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Working with VCF Files Using bcftools</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <section class="resume-section" id="blog">
+    <div class="container py-5">
+      <h3 class="mt-4">Working with VCF Files Using <code>bcftools</code></h3>
+      <p>VCF (Variant Call Format) files are a staple in bioinformatics for storing variant calls like SNPs, indels, and structural variants. One of the most powerful tools to manipulate, filter, and extract information from VCF files is <code>bcftools</code>, part of the SAMtools suite.</p>
 
-<section class="resume-section" id="blog">
-  <div class="resume-section-content">
-   
-    <h3 class="mt-4">Working with VCF Files Using <code>bcftools</code></h3>
-    <p>VCF (Variant Call Format) files are a staple in bioinformatics for storing variant calls like SNPs, indels, and structural variants. One of the most powerful tools to manipulate, filter, and extract information from VCF files is <code>bcftools</code>, part of the SAMtools suite.</p>
-
-    <div class="accordion mb-4" id="vcfToolsAccordion">
-
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading1">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
-            1. View VCF File Header
-          </button>
-        </h2>
-        <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
-          <div class="accordion-body">
-            <pre><code>bcftools view -h variants.vcf.gz</code></pre>
+      <div class="accordion mb-4" id="vcfToolsAccordion">
+        <!-- 1 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading1">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+              1. View VCF File Header
+            </button>
+          </h2>
+          <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools view -h variants.vcf.gz</code></pre>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading2">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
-            2. Extract Variant Statistics
-          </button>
-        </h2>
-        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
-          <div class="accordion-body">
-            <pre><code>bcftools stats variants.vcf.gz > vcf.stats
+        <!-- 2 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading2">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+              2. Extract Variant Statistics
+            </button>
+          </h2>
+          <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools stats variants.vcf.gz > vcf.stats
 plot-vcfstats vcf.stats -p plots/</code></pre>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading3">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
-            3. Filter by Variant Quality
-          </button>
-        </h2>
-        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
-          <div class="accordion-body">
-            <pre><code>bcftools filter -i 'QUAL>30' variants.vcf.gz -Oz -o filtered.vcf.gz</code></pre>
+        <!-- 3 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading3">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+              3. Filter by Variant Quality
+            </button>
+          </h2>
+          <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools filter -i 'QUAL&gt;30' variants.vcf.gz -Oz -o filtered.vcf.gz</code></pre>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading4">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
-            4. Extract Region of Interest
-          </button>
-        </h2>
-        <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
-          <div class="accordion-body">
-            <pre><code>bcftools view -r chr1:1000000-2000000 variants.vcf.gz -Oz -o chr1_region.vcf.gz</code></pre>
+        <!-- 4 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading4">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+              4. Extract Region of Interest
+            </button>
+          </h2>
+          <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools view -r chr1:1000000-2000000 variants.vcf.gz -Oz -o chr1_region.vcf.gz</code></pre>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading5">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
-            5. Extract Specific Samples
-          </button>
-        </h2>
-        <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
-          <div class="accordion-body">
-            <pre><code>bcftools view -s Sample1,Sample2 variants.vcf.gz -Oz -o subset_samples.vcf.gz</code></pre>
+        <!-- 5 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading5">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+              5. Extract Specific Samples
+            </button>
+          </h2>
+          <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools view -s Sample1,Sample2 variants.vcf.gz -Oz -o subset_samples.vcf.gz</code></pre>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading6">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
-            6. Convert to Table
-          </button>
-        </h2>
-        <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
-          <div class="accordion-body">
-            <pre><code>bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%DP\t%AF\n' variants.vcf.gz > variants.tsv</code></pre>
+        <!-- 6 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading6">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+              6. Convert to Table
+            </button>
+          </h2>
+          <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%DP\t%AF\n' variants.vcf.gz > variants.tsv</code></pre>
+            </div>
           </div>
         </div>
-      </div>
 
+        <!-- 7 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading7">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7">
+              7. Index a VCF File
+            </button>
+          </h2>
+          <div id="collapse7" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools index variants.vcf.gz</code></pre>
+              <p>Creates a .csi index file required for fast querying and region extraction.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading8">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8">
+              8. Merge Multiple VCF Files
+            </button>
+          </h2>
+          <div id="collapse8" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools merge sample1.vcf.gz sample2.vcf.gz -Oz -o merged.vcf.gz</code></pre>
+              <p>Combines multiple VCFs with shared samples into a single file.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading9">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9">
+              9. Concatenate VCF Files (Different Regions)
+            </button>
+          </h2>
+          <div id="collapse9" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools concat part1.vcf.gz part2.vcf.gz -Oz -o full.vcf.gz</code></pre>
+              <p>Concatenates VCFs from different genomic regions.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading10">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10">
+              10. Normalize Indels (Left-align and Decompose)
+            </button>
+          </h2>
+          <div id="collapse10" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools norm -f reference.fasta -m -any variants.vcf.gz -Oz -o norm.vcf.gz</code></pre>
+              <p>Normalizes variants and splits multiallelic records for consistent analysis.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading11">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11">
+              11. Annotate with INFO from Another VCF
+            </button>
+          </h2>
+          <div id="collapse11" class="accordion-collapse collapse" data-bs-parent="#vcfToolsAccordion">
+            <div class="accordion-body">
+              <pre><code>bcftools annotate -a dbsnp.vcf.gz -c ID -h header.txt variants.vcf.gz -Oz -o annotated.vcf.gz</code></pre>
+              <p>Adds annotations (e.g., rsIDs) from a reference or database VCF.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p>This guide helps you explore and manipulate VCF files efficiently using <code>bcftools</code>.</p>
+      <p><a href="../blog.html">← Back to Blog</a></p>
     </div>
-    <p>This guide helps you explore and manipulate VCF files efficiently using <code>bcftools</code>.</p>
-    <p><a href="../blog.html">← Back to Blog</a></p>
-  </div>
-</section>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
