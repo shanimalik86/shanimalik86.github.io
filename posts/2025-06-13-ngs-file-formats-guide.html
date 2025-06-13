@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NGS & File Formats: Essential Concepts</title>
+    <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container p-4">
+        <h3>NGS & File Formats: Essential Concepts</h3>
+        <p>If you're working with Next-Generation Sequencing (NGS) data, understanding file formats is key to managing your data efficiently. Here’s a quick overview:</p>
+
+        <ul>
+          <li><strong>FASTQ</strong> — Raw sequencing reads with quality scores.</li>
+          <li><strong>SAM/BAM</strong> — Aligned reads; BAM is the compressed binary version of SAM (smaller + faster).</li>
+          <li><strong>CRAM</strong> — Like BAM but with better compression; great for large-scale projects.</li>
+          <li><strong>VCF</strong> — Variant Call Format; stores SNPs, indels, and structural variants.</li>
+        </ul>
+
+        <h4>Conversions Between Formats</h4>
+        <pre><code>samtools view -Sb file.sam > file.bam
+samtools view -h file.bam > file.sam
+samtools view -C -T reference.fasta file.bam > file.cram
+samtools view -b -T reference.fasta file.cram > file.bam</code></pre>
+
+        <h4>Indexing Large Genomic Files</h4>
+        <pre><code>samtools index file.bam
+samtools index file.cram
+tabix -p vcf file.vcf.gz</code></pre>
+
+        <h4>Compression Comparison</h4>
+        <p><strong>CRAM</strong> &lt; <strong>BAM</strong> &lt; <strong>FASTQ.GZ</strong> (in terms of disk space saved).</p>
+        <p>CRAM is ideal for archiving; BAM balances speed and size; FASTQ.GZ stores raw reads but takes more space.</p>
+
+        <p><a href="../blog.html">← Back to Blog</a></p>
+    </div>
+</body>
+</html>
